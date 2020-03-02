@@ -1,3 +1,5 @@
+.. _datasets:
+
 Datasets
 =========
 
@@ -171,6 +173,22 @@ PRID (``prid``)
             single_shot/
             multi_shot/
 
+CUHK02 (``cuhk02``)
+^^^^^^^^^^^^^^^^^^^^^
+- Create a folder named "cuhk02" under ``$REID``.
+- Download the data from http://www.ee.cuhk.edu.hk/~xgwang/CUHK_identification.html and put it under "cuhk02/".
+- Extract the file so the data structure looks like
+
+.. code-block:: none
+    
+    cuhk02/
+        Dataset/
+            P1/
+            P2/
+            P3/
+            P4/
+            P5/
+
 Video Datasets
 --------------
 
@@ -205,7 +223,7 @@ PRID2011 (``prid2011``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 - Create a directory named "prid2011" under ``$REID``.
 - Download the dataset from https://www.tugraz.at/institute/icg/research/team-bischof/lrs/downloads/PRID11/ and extract it under "prid2011".
-- Download the split created by *iLIDS-VID* from `here <http://www.eecs.qmul.ac.uk/~kz303/deep-person-reid/datasets/prid2011/splits_prid2011.json>` and put it under "prid2011/". Following the standard protocol, only 178 persons whose sequences are more than a threshold are used.
+- Download the split created by *iLIDS-VID* from `this google drive <https://drive.google.com/open?id=1qw7SI7YdIgfHetIQO7LLW4SHpL_qkieT>`_ and put it under "prid2011/". Following the standard protocol, only 178 persons whose sequences are more than a threshold are used.
 - The data structure should end up with
 
 .. code-block:: none

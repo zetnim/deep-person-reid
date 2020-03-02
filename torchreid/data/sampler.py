@@ -1,13 +1,11 @@
-from __future__ import absolute_import
-from __future__ import division
-
-from collections import defaultdict
-import numpy as np
+from __future__ import division, absolute_import
 import copy
+import numpy as np
 import random
+from collections import defaultdict
+from torch.utils.data.sampler import Sampler, RandomSampler, SequentialSampler
 
-import torch
-from torch.utils.data.sampler import Sampler, RandomSampler
+AVAI_SAMPLERS = ['RandomIdentitySampler', 'SequentialSampler', 'RandomSampler']
 
 
 class RandomIdentitySampler(Sampler):
@@ -18,10 +16,13 @@ class RandomIdentitySampler(Sampler):
         batch_size (int): batch size.
         num_instances (int): number of instances per identity in a batch.
     """
+
     def __init__(self, data_source, batch_size, num_instances):
         if batch_size < num_instances:
-            raise ValueError('batch_size={} must be no less '
-                             'than num_instances={}'.format(batch_size, num_instances))
+            raise ValueError(
+                'batch_size={} must be no less '
+                'than num_instances={}'.format(batch_size, num_instances)
+            )
 
         self.data_source = data_source
         self.batch_size = batch_size
@@ -48,7 +49,9 @@ class RandomIdentitySampler(Sampler):
         for pid in self.pids:
             idxs = copy.deepcopy(self.index_dic[pid])
             if len(idxs) < self.num_instances:
-                idxs = np.random.choice(idxs, size=self.num_instances, replace=True)
+                idxs = np.random.choice(
+                    idxs, size=self.num_instances, replace=True
+                )
             random.shuffle(idxs)
             batch_idxs = []
             for idx in idxs:
@@ -74,7 +77,9 @@ class RandomIdentitySampler(Sampler):
         return self.length
 
 
-def build_train_sampler(data_source, train_sampler, batch_size=32, num_instances=4, **kwargs):
+def build_train_sampler(
+    data_source, train_sampler, batch_size=32, num_instances=4, **kwargs
+):
     """Builds a training sampler.
 
     Args:
@@ -82,12 +87,18 @@ def build_train_sampler(data_source, train_sampler, batch_size=32, num_instances
         train_sampler (str): sampler name (default: ``RandomSampler``).
         batch_size (int, optional): batch size. Default is 32.
         num_instances (int, optional): number of instances per identity in a
-            batch (for ``RandomIdentitySampler``). Default is 4.
+            batch (when using ``RandomIdentitySampler``). Default is 4.
     """
+    assert train_sampler in AVAI_SAMPLERS, \
+        'train_sampler must be one of {}, but got {}'.format(AVAI_SAMPLERS, train_sampler)
+
     if train_sampler == 'RandomIdentitySampler':
         sampler = RandomIdentitySampler(data_source, batch_size, num_instances)
-    
-    else:
+
+    elif train_sampler == 'SequentialSampler':
+        sampler = SequentialSampler(data_source)
+
+    elif train_sampler == 'RandomSampler':
         sampler = RandomSampler(data_source)
 
     return sampler

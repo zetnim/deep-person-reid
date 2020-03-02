@@ -1,5 +1,4 @@
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import division, absolute_import
 
 __all__ = ['AverageMeter']
 
@@ -13,6 +12,7 @@ class AverageMeter(object):
         >>> # Update meter after every minibatch update
         >>> losses.update(loss_value, batch_size)
     """
+
     def __init__(self):
         self.reset()
 
